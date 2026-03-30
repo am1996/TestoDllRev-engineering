@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dllprobing")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63d0e402372b26f3bcea2036148a757785cf15d6")]
 [assembly: System.Reflection.AssemblyProductAttribute("dllprobing")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dllprobing")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
