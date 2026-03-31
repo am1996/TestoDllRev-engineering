@@ -1,0 +1,15 @@
+G:\projects\TestoDllRev-engineering\bin\Debug\net10.0\TestoDllRev-engineering.exe
+G:\projects\TestoDllRev-engineering\bin\Debug\net10.0\TestoDllRev-engineering.deps.json
+G:\projects\TestoDllRev-engineering\bin\Debug\net10.0\TestoDllRev-engineering.runtimeconfig.json
+G:\projects\TestoDllRev-engineering\bin\Debug\net10.0\TestoDllRev-engineering.dll
+G:\projects\TestoDllRev-engineering\bin\Debug\net10.0\TestoDllRev-engineering.pdb
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.GeneratedMSBuildEditorConfig.editorconfig
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.AssemblyInfoInputs.cache
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.AssemblyInfo.cs
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.csproj.CoreCompileInputs.cache
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.sourcelink.json
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.dll
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\refint\TestoDllRev-engineering.dll
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.pdb
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\TestoDllRev-engineering.genruntimeconfig.cache
+G:\projects\TestoDllRev-engineering\obj\Debug\net10.0\ref\TestoDllRev-engineering.dll

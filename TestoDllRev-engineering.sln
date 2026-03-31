@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestoDllRev-engineering", "TestoDllRev-engineering.csproj", "{462DCB4B-3967-8497-3745-9B0509C4512A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{462DCB4B-3967-8497-3745-9B0509C4512A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{462DCB4B-3967-8497-3745-9B0509C4512A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{462DCB4B-3967-8497-3745-9B0509C4512A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{462DCB4B-3967-8497-3745-9B0509C4512A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B29CBCFA-86D9-481E-B937-9F312D83DCCF}
+	EndGlobalSection
+EndGlobal
