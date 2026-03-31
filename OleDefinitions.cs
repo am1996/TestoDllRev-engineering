@@ -4,18 +4,22 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace OLEWriter
 {
-    [StructLayout(LayoutKind.Explicit, Size = 16, CharSet = CharSet.Ansi, Pack = 8)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct PROPVARIANT
     {
-        [FieldOffset(0)] public ushort vt;
-        [FieldOffset(8)] public IntPtr ptr;
+        public ushort vt;
+        public ushort wReserved1;
+        public ushort wReserved2;
+        public ushort wReserved3;
+        public IntPtr unionmember1; // Holds the string pointer
+        public IntPtr unionmember2; // Pads out the union size (24 bytes on x64)
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct PROPSPEC
     {
         public uint ulKind;
-        public uint propid;
+        public IntPtr data; // Replaces 'propid' to handle x64 C++ union padding safely
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -43,6 +47,7 @@ namespace OLEWriter
         void SetClass(ref Guid clsid);
         void SetStateBits(uint bits, uint mask);
         void Stat(out STATSTG stat, uint flags);
+        void OpenStorageEx([In, MarshalAs(UnmanagedType.LPWStr)] string name, uint mode, uint stgfmt, uint grfAttrs, IntPtr pStgOptions, IntPtr reserved2, ref Guid riid, out IStorage stg);
     }
 
     [ComImport, Guid("0000013A-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -74,6 +79,7 @@ namespace OLEWriter
 
     public static class OleConstants
     {
+        public const ushort VT_LPSTR = 30;
         public const uint STGM_READWRITE      = 0x00000002;
         public const uint STGM_SHARE_EXCLUSIVE = 0x00000010;
         public const uint STGM_CREATE         = 0x00001000;
