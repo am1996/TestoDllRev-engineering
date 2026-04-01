@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TestoDllRev-engineering")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa02e3bf856f9b441dce58dc9bcea51e88baec32")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a28f0915f97e622a221b2a75bef4f9ac62c8b175")]
 [assembly: System.Reflection.AssemblyProductAttribute("TestoDllRev-engineering")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TestoDllRev-engineering")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

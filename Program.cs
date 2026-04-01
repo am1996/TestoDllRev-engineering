@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using MetadataGenerator;
 
 namespace OLEWriter
 {
@@ -74,6 +75,8 @@ namespace OLEWriter
                 byte[] tziBytes = StructureToByteArray(tzi);
                 WriteSummaryInformation(ss_30438_Storage, serialNumber);
                 timezoneStream.Write(tziBytes, tziBytes.Length, IntPtr.Zero);
+                MetadataGenerator.PropertySetWriter propertysetwriter = new MetadataGenerator.PropertySetWriter();
+                propertysetwriter.WriteSpecificProperties(channel1Storage);
                 rootStorage.Commit(0);
 
                 Marshal.ReleaseComObject(channelStorage);
@@ -91,33 +94,6 @@ namespace OLEWriter
             finally
             {
                 if (Marshal.IsComObject(rootStorage)) Marshal.ReleaseComObject(rootStorage);
-            }
-        }
-        public void CreateTemperatureMetadata()
-        {
-            // 1. Create the Property Set
-            PropertySet ps = new PropertySet();
-            
-            // 2. Create the Document Summary Section
-            Section section = new Section();
-            section.SetFormatID(SectionIDMap.DOCUMENT_SUMMARY_INFORMATION[0]);
-            
-            // 3. Add the "temperature" property
-            // In OLE, custom properties often start at ID 2
-            Property p = new Property();
-            p.SetID(2); 
-            p.SetType(Variant.VT_R8); // Double precision float
-            p.SetValue(22.5);          // Example value
-            
-            section.SetProperties(new Property[] { p });
-            ps.AddSection(section);
-
-            // 4. Write to a stream (to be placed in an OLE file)
-            using (MemoryStream ms = new MemoryStream())
-            {
-                ps.Write(ms);
-                byte[] result = ms.ToArray();
-                // This 'result' byte array is your binary data
             }
         }
         static void WriteSummaryInformation(IStorage rootStorage, string serialNumber)

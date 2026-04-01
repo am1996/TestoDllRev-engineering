@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using MetadataGenerator;
 
 namespace OLEWriter
 {
@@ -75,6 +76,7 @@ namespace OLEWriter
     public interface IPropertyStorage
     {
         [PreserveSig] int ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray)] PROPVARIANT[] rgpropvar);
+        [PreserveSig] int WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPSPEC2[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPVARIANT2[] rgpropvar, uint propidNameFirst);
         [PreserveSig] int WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPVARIANT[] rgpropvar, uint propidNameFirst);
         [PreserveSig] int DeleteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPSPEC[] rgpspec);
         [PreserveSig] int ReadPropertyNames(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] uint[] rgpropid, [Out, MarshalAs(UnmanagedType.LPArray)] string[] rglpwstrName);
