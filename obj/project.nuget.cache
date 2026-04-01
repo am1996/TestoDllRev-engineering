@@ -1,8 +1,22 @@
 {
   "version": 2,
-  "dgSpecHash": "mm4sv2qrzE8=",
+  "dgSpecHash": "L4kOT12UK9E=",
   "success": true,
   "projectFilePath": "G:\\projects\\TestoDllRev-engineering\\TestoDllRev-engineering.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\enums.net\\5.0.0\\enums.net.5.0.0.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\extendednumerics.bigdecimal\\2025.1001.2.129\\extendednumerics.bigdecimal.2025.1001.2.129.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\mathnet.numerics.signed\\5.0.0\\mathnet.numerics.signed.5.0.0.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\microsoft.io.recyclablememorystream\\3.0.1\\microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\npoi\\2.7.6\\npoi.2.7.6.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\nsax\\1.0.2\\nsax.1.0.2.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\sharpziplib\\1.4.2\\sharpziplib.1.4.2.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\sixlabors.fonts\\1.0.1\\sixlabors.fonts.1.0.1.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\sixlabors.imagesharp\\2.1.11\\sixlabors.imagesharp.2.1.11.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\system.security.cryptography.xml\\8.0.2\\system.security.cryptography.xml.8.0.2.nupkg.sha512",
+    "C:\\Users\\ahmed.magdyy\\.nuget\\packages\\zstring\\2.6.0\\zstring.2.6.0.nupkg.sha512"
+  ],
   "logs": []
 }

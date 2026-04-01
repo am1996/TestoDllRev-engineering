@@ -30,6 +30,18 @@ namespace OLEWriter
         public ushort vt;
     }
 
+    [ComImport, Guid("0000000c-0000-0000-C000-000000000046"),InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IStream
+    {
+        [PreserveSig] public int Read([Out] byte[] pv, int cb, IntPtr pcbRead);
+        [PreserveSig] public int Write([In] byte[] pv, int cb, IntPtr pcbWritten);
+        [PreserveSig] public int Seek(long dlibMove, uint dwOrigin, IntPtr plibNewPosition);
+        [PreserveSig] public int SetSize(long libNewSize);
+        [PreserveSig] public int CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
+        [PreserveSig] public int Commit(uint grfCommitFlags);
+        [PreserveSig] public int Revert();
+    }
+
     [ComImport, Guid("0000000b-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IStorage
     {
@@ -79,7 +91,6 @@ namespace OLEWriter
 
     public static class OleConstants
     {
-        public const ushort VT_LPSTR = 30;
         public const uint STGM_READWRITE      = 0x00000002;
         public const uint STGM_SHARE_EXCLUSIVE = 0x00000010;
         public const uint STGM_CREATE         = 0x00001000;
@@ -88,8 +99,11 @@ namespace OLEWriter
         public const uint PRSPEC_PROPID = 1;
 
         public const ushort VT_LPWSTR = 31;
-
+        public const ushort VT_LPSTR = 30; // LPSTR is ansi8 string,
+        public const ushort VT_UI4 = 19;   // Unsigned 4-byte integer
+        public const ushort VT_R8 = 5;     // 8-byte real (double)
         public static readonly Guid IID_IStorage            = new Guid("0000000b-0000-0000-C000-000000000046");
         public static readonly Guid Fmtid_SummaryInformation = new Guid("F29F85E0-4FF9-1068-AB91-08002B27B3D9");
     }
+    
 }

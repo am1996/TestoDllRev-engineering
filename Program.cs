@@ -1,3 +1,6 @@
+using NPOI.HPSF; // Header Property Storage Format
+using NPOI.POIFS.FileSystem;
+using System.IO;
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -26,28 +29,56 @@ namespace OLEWriter
 
             try
             {
-                rootStorage.CreateStorage("30438", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage ss_30438);
+                rootStorage.CreateStorage("30438", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage ss_30438_Storage);
                 rootStorage.CreateStream("org", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var orgStream);
 
-                ss_30438.CreateStream("t17b", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var dataStream);
-                ss_30438.CreateStream("summary", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var summaryStream);
+                ss_30438_Storage.CreateStream("t17b", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var dataStream);
+                ss_30438_Storage.CreateStream("summary", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var summaryStream);
 
-                ss_30438.CreateStorage("data", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage data);
-                data.CreateStream("scheme", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var schemeStream);
-                data.CreateStream("timezone", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var timezoneStream);
-                data.CreateStream("values", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var valuesStream);
-                ss_30438.CreateStorage("channels", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage channels);
+                ss_30438_Storage.CreateStorage("data", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage dataStorage);
+                dataStorage.CreateStream("scheme", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var schemeStream);
+                dataStorage.CreateStream("timezone", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var timezoneStream);
+                dataStorage.CreateStream("values", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out var valuesStream);
+                ss_30438_Storage.CreateStorage("channels", OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage channelStorage);
+                channelStorage.CreateStorage("1",OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage channel1Storage);
+                channelStorage.CreateStorage("2",OleConstants.STGM_RW_EXCL_CREATE, 0, 0, out IStorage channel2Storage);
 
                 // Hex: 01 00 02 00 03 00
-                byte[] scehmeData = new byte[] { 0x02, 0x00, 0x01, 0x00, 0x03, 0x00 };
-                schemeStream.Write(scehmeData, 0, scehmeData.Length);
-                WriteSummaryInformation(ss_30438, serialNumber);
-
+                // Use IntPtr.Zero to tell Windows "I don't care how many bytes were written"
+                schemeStream.Write(new byte[] { 0x02, 0x00, 0x01, 0x00, 0x03, 0x00 }, 6, IntPtr.Zero);
+                TIME_ZONE_INFORMATION tzi = new TIME_ZONE_INFORMATION
+                {
+                    // UTC = local time + bias. For UTC+2, bias is -120.
+                    Bias = -120, 
+                    StandardName = "Egypt Standard Time",
+                    StandardDate = new SYSTEMTIME 
+                    { 
+                        wYear = 0, 
+                        wMonth = 10,     // October
+                        wDay = 5,       // 5 means the "last" occurrence of the day
+                        wDayOfWeek = 5, // 5 = Friday
+                        wHour = 0       // Transition at midnight
+                    },
+                    StandardBias = 0,
+                    DaylightName = "Egypt Daylight Time",
+                    DaylightDate = new SYSTEMTIME 
+                    { 
+                        wYear = 0, 
+                        wMonth = 4,      // April
+                        wDay = 4,       // The 4th occurrence (April 24 is the 4th Friday in 2026)
+                        wDayOfWeek = 5, // 5 = Friday
+                        wHour = 0       // Transition at midnight
+                    },
+                    DaylightBias = -60 // Subtract 60 mins from standard bias during DST
+                };
+                byte[] tziBytes = StructureToByteArray(tzi);
+                WriteSummaryInformation(ss_30438_Storage, serialNumber);
+                timezoneStream.Write(tziBytes, tziBytes.Length, IntPtr.Zero);
                 rootStorage.Commit(0);
 
-                Marshal.ReleaseComObject(channels);
-                Marshal.ReleaseComObject(data);
-                Marshal.ReleaseComObject(ss_30438);
+                Marshal.ReleaseComObject(channelStorage);
+                Marshal.ReleaseComObject(dataStorage);
+                Marshal.ReleaseComObject(ss_30438_Storage);
                 Marshal.ReleaseComObject(orgStream);
 
                 Console.WriteLine("Success! File created with Summary Information.");
@@ -62,7 +93,33 @@ namespace OLEWriter
                 if (Marshal.IsComObject(rootStorage)) Marshal.ReleaseComObject(rootStorage);
             }
         }
+        public void CreateTemperatureMetadata()
+        {
+            // 1. Create the Property Set
+            PropertySet ps = new PropertySet();
+            
+            // 2. Create the Document Summary Section
+            Section section = new Section();
+            section.SetFormatID(SectionIDMap.DOCUMENT_SUMMARY_INFORMATION[0]);
+            
+            // 3. Add the "temperature" property
+            // In OLE, custom properties often start at ID 2
+            Property p = new Property();
+            p.SetID(2); 
+            p.SetType(Variant.VT_R8); // Double precision float
+            p.SetValue(22.5);          // Example value
+            
+            section.SetProperties(new Property[] { p });
+            ps.AddSection(section);
 
+            // 4. Write to a stream (to be placed in an OLE file)
+            using (MemoryStream ms = new MemoryStream())
+            {
+                ps.Write(ms);
+                byte[] result = ms.ToArray();
+                // This 'result' byte array is your binary data
+            }
+        }
         static void WriteSummaryInformation(IStorage rootStorage, string serialNumber)
         {
             IPropertySetStorage propSetStorage = (IPropertySetStorage)rootStorage;
@@ -98,7 +155,37 @@ namespace OLEWriter
                 Marshal.ReleaseComObject(propStorage);
             }
         }
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct SYSTEMTIME
+        {
+            public ushort wYear, wMonth, wDayOfWeek, wDay, wHour, wMinute, wSecond, wMilliseconds;
+        }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct TIME_ZONE_INFORMATION
+        {
+            public int Bias;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string StandardName;
+            public SYSTEMTIME StandardDate;
+            public int StandardBias;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DaylightName;
+            public SYSTEMTIME DaylightDate;
+            public int DaylightBias;
+        }
+
+        // Helper to convert the struct to bytes for the IStream
+        public static byte[] StructureToByteArray(object obj)
+        {
+            int len = Marshal.SizeOf(obj);
+            byte[] arr = new byte[len];
+            IntPtr ptr = Marshal.AllocHGlobal(len);
+            Marshal.StructureToPtr(obj, ptr, true);
+            Marshal.Copy(ptr, arr, 0, len);
+            Marshal.FreeHGlobal(ptr);
+            return arr;
+        }
         static PROPVARIANT MakeLpstr(string s) => new PROPVARIANT
         {
             vt = OleConstants.VT_LPSTR,
