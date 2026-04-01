@@ -57,8 +57,9 @@ namespace OLEWriter
                 timezoneStream.Write(OleHelper.StructureToByteArray(tzi), Marshal.SizeOf(tzi), IntPtr.Zero);
 
                 WriteSummaryInformation(ss_30438, serialNumber);
-                new PropertySetWriter().WriteSpecificProperties(channel1Storage);
-
+                new PropertySetWriter().WriteTemperatureProperties(channel1Storage);
+                new PropertySetWriter().WriteHumidityProperties(channel2Storage);
+                timezoneStream.Write(OleHelper.StructureToByteArray(tzi), Marshal.SizeOf(tzi), IntPtr.Zero);
                 rootStorage.Commit(0);
 
                 Marshal.ReleaseComObject(channel2Storage);
