@@ -62,29 +62,43 @@ namespace OLEWriter
         public ushort vt;
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct SYSTEMTIME
     {
-        public ushort wYear, wMonth, wDayOfWeek, wDay, wHour, wMinute, wSecond, wMilliseconds;
+        public ushort wYear;
+        public ushort wMonth;
+        public ushort wDayOfWeek;
+        public ushort wDay;
+        public ushort wHour;
+        public ushort wMinute;
+        public ushort wSecond;
+        public ushort wMilliseconds;
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct TIME_ZONE_INFORMATION
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
+    public struct OLE_TZI_FORMAT
     {
-        public int Bias;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string StandardName;
-        public SYSTEMTIME StandardDate;
-        public int StandardBias;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string DaylightName;
-        public SYSTEMTIME DaylightDate;
-        public int DaylightBias;
+        // The "Big Three" must be first to match vAAAAAEAAAAB
+        public int Bias;           
+        public int StandardBias;   
+        public int DaylightBias;   
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+        public byte[] StandardNameBuffer; // Manual buffer to force 64 bytes
+
+        public SYSTEMTIME StandardDate; 
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+        public byte[] DaylightNameBuffer; // Manual buffer to force 64 bytes
+
+        public SYSTEMTIME DaylightDate; 
     }
 
     [ComImport, Guid("0000000c-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IStream
     {
         [PreserveSig] int Read([Out] byte[] pv, int cb, IntPtr pcbRead);
-        [PreserveSig] int Write([In] byte[] pv, int cb, IntPtr pcbWritten);
+        [PreserveSig] int Write([In, MarshalAs(UnmanagedType.LPArray,SizeParamIndex=1)] byte[] pv, int cb, IntPtr pcbWritten);
         [PreserveSig] int Seek(long dlibMove, uint dwOrigin, IntPtr plibNewPosition);
         [PreserveSig] int SetSize(long libNewSize);
         [PreserveSig] int CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
